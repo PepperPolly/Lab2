@@ -1,0 +1,101 @@
+#include <iostream>
+#include<string>
+using namespace std;
+class cstudent
+{
+private:
+    static int i;
+    int id;
+    string fio;
+    int rate;
+public:
+    
+    cstudent()
+    {
+        cout << "Create" << endl;
+        fio = "FIO";
+        id = i;
+        i++;
+        rate = 0;
+    }
+    cstudent(string a, int b)
+    {
+        fio = a;
+        id = i;
+        i++;
+        rate = b;
+    }
+    ~cstudent()
+    {
+        cout << "Delete" << endl;
+    }
+    string getfio()
+    {
+        return fio;
+    }
+    int getid()
+    {
+        return id;
+    }
+    void input()
+    {
+        cout << "Vvedite fio st:" << endl;
+        getline(cin, fio);
+    }
+    friend void showstudent(cstudent a);
+    friend class cdekan;
+};
+void showstudent(cstudent a)
+{
+    cout << "Student:" << a.fio << " " << "ID:" << a.id <<" "<<"Rate:"<<a.rate<< endl;
+}
+int cstudent::i = 1;
+class cdekan
+{
+public:
+    void setrate(cstudent &a)
+    {
+        do
+        {
+            fflush(stdin);
+            cout << "Vvedite rate: "<<endl;
+            cin >> a.rate;
+            cin.ignore();
+        } while (a.rate < 0|| (a.rate>'a'&& a.rate<'z')|| (a.rate > 'A' && a.rate < 'Z'));
+    }
+};
+int main()
+{
+    cstudent a,a1("Ivanov",9), a2[5];
+    cdekan c;
+    int n;
+    showstudent(a);
+    a.input();
+    c.setrate(a);
+    showstudent(a);
+    showstudent(a1);
+    c.setrate(a1);
+    showstudent(a1);
+    do
+    {
+        fflush(stdin);
+        cout << "Vvedite chislo st: " << endl;
+        cin >>n;
+        cin.ignore();
+    } while (n < 0 || (n > 'a' && n < 'z') || (n > 'A' && n < 'Z'));
+    cstudent* f = new(nothrow)cstudent[n];
+    if (!f)
+    {
+        cout << "Error" << endl;
+        return 0;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        f[i].input();
+        showstudent(f[i]);
+        c.setrate(f[i]);
+        showstudent(f[i]);
+    }
+    delete[] f;
+}
+
